@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.RestPcab.dto.StudentDTO;
@@ -70,10 +74,23 @@ public class StudentService {
 
 
 	
-	
-	
+		
+		public List<Student> fetchAll(String sort, boolean desc, int page, int data) {
+			
+			Sort sortBasedOn = Sort.by(sort);
+			if (desc)
+				sortBasedOn = sortBasedOn.descending();
+			
+			Pageable pageable = PageRequest.of(page - 1, data, sortBasedOn);
+			
+			Page<Student> records = repository.findAll(pageable);
+			
+			if(!records.isEmpty())
+				return records.getContent();
+			else
+				return null;
+		}
 
 
-	
 
 }

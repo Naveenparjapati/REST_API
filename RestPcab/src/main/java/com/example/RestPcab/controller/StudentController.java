@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.RestPcab.dto.StudentDTO;
@@ -56,7 +58,17 @@ public class StudentController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 	}
-
+     
+	//fetch all records
+	@GetMapping("/students")
+	@Operation(summary = "Fetch all records")
+	public ResponseEntity<List<Student>>  FetchAll(
+			@RequestParam(defaultValue = "id") String sort,@RequestParam(defaultValue = "false") boolean desc,
+			 @RequestParam(defaultValue = "1") int page,
+			 @RequestParam(defaultValue = "10") int data){
+		return ResponseEntity.status(HttpStatus.OK).body(service.fetchAll(sort,desc,page,data));
+				
+	}
 	
 	@DeleteMapping("/student/{id}")
 	@Operation(summary = "Delete by Id")
